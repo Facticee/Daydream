@@ -24,10 +24,12 @@ void main() {
 	if (isWater > 0.5) {
 
 		vec3 wavePos = gl_Vertex.xyz + cameraPosition;
-		wavePos = floor(wavePos * 16.0) / 16.0;
-		float wave = sin(wavePos.x * 1.5 + frameTimeCounter * 2.0) * 0.08 +
-		cos(wavePos.z * 1.5 + frameTimeCounter * 1.8) * 0.08;
 
+		float wave = 0.0;
+		wave += sin(wavePos.x * 1.2 + frameTimeCounter * 1.6) * 0.07;
+		wave += sin(wavePos.z * 1.4 + frameTimeCounter * 1.9) * 0.05;
+		wave += sin((wavePos.x + wavePos.z) * 1.0 + frameTimeCounter * 1.1) * 0.04;
+		wave += cos((wavePos.x - wavePos.z) * 1.1 + frameTimeCounter * 1.3) * 0.045;
 		viewPos.y += wave;
 		worldPos.y += wave;
 	}
