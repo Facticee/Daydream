@@ -9,13 +9,16 @@ in vec2 lmcoord;
 in vec2 texcoord;
 in vec4 glcolor;
 
-/* RENDERTARGETS: 0 */
-layout(location = 0) out vec4 color;
+in float isWater;
+
+out vec4 fragColor;
 
 void main() {
-	color = texture(gtexture, texcoord) * glcolor;
-	color *= texture(lightmap, lmcoord);
-	if (color.a < alphaTestRef) {
-		discard;
+	vec4 albedo = texture(gtexture, texcoord) * glcolor;
+
+	if (isWater > 0.5) {
+		albedo.rgb = mix(albedo.rgb, vec3(0.1, 0.4, 0.8), 0.6);
+		albedo.a = 0.75;
 	}
+	fragColor = albedo;
 }
