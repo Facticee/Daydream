@@ -2,20 +2,24 @@
 
 uniform sampler2D lightmap;
 uniform sampler2D gtexture;
+uniform sampler2DShadow shadowtex0;
 
 uniform float alphaTestRef = 0.1;
 
 in vec2 lmcoord;
 in vec2 texcoord;
 in vec4 glcolor;
+in vec4 shadowCoord;
 
-/* RENDERTARGETS: 0 */
-layout(location = 0) out vec4 color;
+out vec4 fragColor;
 
 void main() {
-	color = texture(gtexture, texcoord) * glcolor;
-	color *= texture(lightmap, lmcoord);
-	if (color.a < alphaTestRef) {
-		discard;
-	}
+	vec4 albedo = texture(gtexture, texcoord) * glcolor;
+	if (albedo.a < 0.1) discard;
+
+	float shadow = texture(shadowtex0, shadowCoord.xyz);
+	float shade = mix(0.68, 1.0, shadow);
+	vec3 light = mix(vec3(0.45), texture(lightmap, lmcoord).rgb, 0.78);
+
+	fragColor = vec4(albedo.rgb * light * shade, albedo.a);
 }
