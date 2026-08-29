@@ -19,8 +19,7 @@ void main() {
 
 	if (isWater > 0.5) {
 
-		vec3 waterColor = vec3(0.1, 0.4, 0.8);
-		albedo.rgb = mix(albedo.rgb, waterColor, 0.6);
+		albedo.rgb = texture(gtexture, texcoord).rgb * glcolor.rgb;
 
 		float shadow = 1.0;
 		shadow = texture(shadowtex0, shadowCoord.st).r;
