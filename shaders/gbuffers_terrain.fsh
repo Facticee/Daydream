@@ -19,7 +19,7 @@ void main() {
 
 	float shadow = texture(shadowtex0, shadowCoord.xyz);
 	float shade = mix(0.68, 1.0, shadow);
-	vec3 light = mix(vec3(0.45), texture(lightmap, lmcoord).rgb, 0.78);
+	vec3 light = texture(lightmap, lmcoord).rgb; // dark fix
 
 	fragColor = vec4(albedo.rgb * light * shade, albedo.a);
 }
