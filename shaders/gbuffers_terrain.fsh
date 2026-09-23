@@ -1,25 +1,21 @@
 #version 330 compatibility
 
-uniform sampler2D lightmap;
 uniform sampler2D gtexture;
-uniform sampler2DShadow shadowtex0;
-
-uniform float alphaTestRef = 0.1;
 
 in vec2 lmcoord;
 in vec2 texcoord;
 in vec4 glcolor;
-in vec4 shadowCoord;
+in vec3 normal;
 
-out vec4 fragColor;
+/* RENDERTARGETS: 0,1,2 */
+layout(location = 0) out vec4 color;
+layout(location = 1) out vec4 lightData;
+layout(location = 2) out vec4 normalData;
 
 void main() {
-	vec4 albedo = texture(gtexture, texcoord) * glcolor;
-	if (albedo.a < 0.1) discard;
+	color = texture(gtexture, texcoord) * glcolor;
+	if (color.a < 0.1) discard;
 
-	float shadow = texture(shadowtex0, shadowCoord.xyz);
-	float shade = mix(0.68, 1.0, shadow);
-	vec3 light = texture(lightmap, lmcoord).rgb; // dark fix
-
-	fragColor = vec4(albedo.rgb * light * shade, albedo.a);
+	lightData = vec4(lmcoord, 0.0, 1.0);
+	normalData = vec4(normalize(normal) * 0.5 + 0.5, 1.0);
 }
