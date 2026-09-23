@@ -11,7 +11,7 @@ uniform vec3 shadowLightPosition;
 uniform mat4 gbufferModelViewInverse, gbufferProjectionInverse;
 uniform mat4 shadowModelView, shadowProjection;
 uniform int worldTime;
-uniform float viewWidth, viewHeight, rainStrength;
+uniform float viewWidth, viewHeight;
 
 const float shadowDistance = 144.0;
 const int PCF_RANGE = 2;
@@ -35,7 +35,7 @@ vec3 pcf(vec4 clip) {
 
 	for (int x = -PCF_RANGE; x <= PCF_RANGE; x++) {
 		for (int y = -PCF_RANGE; y <= PCF_RANGE; y++) {
-			vec4 p = clip + vec4(r * (vec2(x, y) * (PCF_RADIUS / 8092.0)), -0.002, 0.0);
+			vec4 p = clip + vec4(r * (vec2(x, y) * (PCF_RADIUS / 8092.0)), -0.004, 0.0);
 			p.xyz = warpShadowClipPos(p.xyz);
 			p.xyz = p.xyz / p.w * 0.5 + 0.5;
 			if (all(greaterThanEqual(p.xy, vec2(0.0))) && all(lessThanEqual(p.xy, vec2(1.0)))) {
@@ -76,15 +76,18 @@ void main() {
 	vec2 lm = texture(colortex1, texcoord).rg;
 	vec3 n = normalize(texture(colortex2, texcoord).rgb * 2.0 - 1.0);
 	bool day = worldTime <= 12700 || worldTime >= 22900;
-	vec3 light = normalize(mat3(gbufferModelViewInverse) * shadowLightPosition);
+	vec3 lightDir = normalize(mat3(gbufferModelViewInverse) * shadowLightPosition);
 
 	vec4 viewPos = gbufferProjectionInverse * vec4(vec3(texcoord, d0) * 2.0 - 1.0, 1.0);
 	viewPos /= viewPos.w;
 	vec3 pos = (gbufferModelViewInverse * viewPos).xyz;
-	vec3 s = day && rainStrength == 0.0 ? shadow(pos) : vec3(1.0);
-	float sun = day ? clamp(dot(light, n), 0.0, 1.0) : 0.0;
 
-	vec3 lighting = lm.y * (vec3(0.3, 0.42, 0.55) + vec3(1.0, 0.92, 0.78) * sun * s)
+	vec3 shadowCol = day ? shadow(pos) : vec3(1.0);
+	float sun = day ? clamp(dot(lightDir, n), 0.0, 1.0) : 0.0;
+
+	// Beleuchtung berechnen
+	vec3 lighting = lm.y * (vec3(0.3, 0.42, 0.55) + vec3(1.0, 0.92, 0.78) * sun * shadowCol)
 	+ vec3(1.0, 0.6, 0.3) * lm.x * lm.x + 0.03;
+
 	color = vec4(albedo.rgb * lighting, 1.0);
 }
