@@ -20,6 +20,10 @@ void main() {
     vec3 color = texture2D(colortex0, texcoord).rgb;
     color = mix(vec3(lumaF(color)), color, VIBRANCY);
     color = (color - 0.5) * CONTRAST + 0.5;
+
+    float exposure = 1.3;
+    color.rgb *= exposure;
+
     vec2 v = texcoord - 0.5;
     color *= 1.0 - dot(v, v) * 0.35;
     color += (hashF(texcoord + fract(frameTimeCounter)) - 0.5) / 255.0;

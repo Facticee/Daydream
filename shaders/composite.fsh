@@ -14,7 +14,7 @@ uniform int worldTime;
 uniform float viewWidth, viewHeight;
 
 uniform float far;
-uniform vec3 frogColor;
+uniform vec3 fogColor;
 
 const float shadowDistance = 144.0;
 const int PCF_RANGE = 2;
@@ -94,7 +94,7 @@ void main() {
 
 	vec3 finalColor = albedo.rgb * lighting;
 
-	float fog = smoothstep(far * 0.7, far, length(viewpos.xyz));
+	float fog = smoothstep(far * 0.7, far, length(viewPos.xyz));
 	finalColor = mix(finalColor, fogColor, fog);
 
 	color = vec4(finalColor, 1.0);
