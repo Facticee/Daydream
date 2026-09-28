@@ -92,7 +92,7 @@ void main() {
 	vec3 lighting = lm.y * (vec3(0.5, 0.62, 0.75) + vec3(1.0, 0.92, 0.78) * sun * shadowCol)
 	+ vec3(1.0, 0.6, 0.3) * lm.x * lm.x + 0.03;
 
-	vec3 finalColor = albedo.rgb * lighting;
+	vec3 finalColor = albedo.rgb * lighting * 0.85;
 
 	float fog = smoothstep(far * 0.7, far, length(viewPos.xyz));
 	finalColor = mix(finalColor, fogColor, fog);
