@@ -19,9 +19,9 @@ vec3 calcSkyColor(vec3 pos) {
 	vec3 baseSky = skyColor;
 
 
-	baseSky.r *= 0.4;
-	baseSky.g *= 0.5;
-	baseSky.b *= 4.0;
+	baseSky.r *= 0.1;
+	baseSky.g *= 0.65;
+	baseSky.b *= 1.8;
 
 	return mix(baseSky, fogColor, fogify(max(upDot, 0.0), 0.25));
 }

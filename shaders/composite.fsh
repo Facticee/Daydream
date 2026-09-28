@@ -13,6 +13,9 @@ uniform mat4 shadowModelView, shadowProjection;
 uniform int worldTime;
 uniform float viewWidth, viewHeight;
 
+uniform float far;
+uniform vec3 frogColor;
+
 const float shadowDistance = 144.0;
 const int PCF_RANGE = 2;
 const float PCF_RADIUS = 0.6;
@@ -86,8 +89,13 @@ void main() {
 	float sun = day ? clamp(dot(lightDir, n), 0.0, 1.0) : 0.0;
 
 	// Beleuchtung berechnen
-	vec3 lighting = lm.y * (vec3(0.3, 0.42, 0.55) + vec3(1.0, 0.92, 0.78) * sun * shadowCol)
+	vec3 lighting = lm.y * (vec3(0.5, 0.62, 0.75) + vec3(1.0, 0.92, 0.78) * sun * shadowCol)
 	+ vec3(1.0, 0.6, 0.3) * lm.x * lm.x + 0.03;
 
-	color = vec4(albedo.rgb * lighting, 1.0);
+	vec3 finalColor = albedo.rgb * lighting;
+
+	float fog = smoothstep(far * 0.7, far, length(viewpos.xyz));
+	finalColor = mix(finalColor, fogColor, fog);
+
+	color = vec4(finalColor, 1.0);
 }
