@@ -17,6 +17,18 @@ Daydream is made for players who want a small visual upgrade while keeping the o
 ## ✦ Requirements
 - Requires the [Iris](https://modrinth.com/mod/iris/versions) Mod to be installed! Optifine should work aswell, though I recommend Iris! Guide on how to install further down.
 
+<br>
+<br>
+
+## Built with Hack Club
+![Hackclub](https://assets.hackclub.com/flag-orpheus-left.svg)
+<br>
+This project was built as part of the [Hack Club](https://hackclub.com/) community.
+[Hack Club](https://hackclub.com/) is a community of young people who learn, build, and share through coding.
+
+<br>
+<br>
+
 ## Installation Guide for Fabric not OptiFine
 **Step 1: Install the Mod Loader (Fabric)**
 
