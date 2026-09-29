@@ -85,7 +85,10 @@ void main() {
 	float sun = day ? clamp(dot(lightDir, n), 0.0, 1.0) : 0.0;
 
 	// Beleuchtung berechnen
-	vec3 lighting = lm.y * (vec3(0.5, 0.62, 0.75) + vec3(1.0, 0.92, 0.78) * sun * shadowCol)
+
+	float skyLight = day ? lm.y : lm.y * 0.45;
+
+	vec3 lighting = skyLight * (vec3(0.5, 0.62, 0.75) + vec3(1.0, 0.92, 0.78) * sun * shadowCol)
 	+ vec3(1.0, 0.6, 0.3) * lm.x * lm.x + 0.03;
 
 	vec3 finalColor = albedo.rgb * lighting * 0.85;
