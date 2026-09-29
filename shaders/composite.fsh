@@ -71,10 +71,6 @@ void main() {
 		color = albedo;
 		return;
 	}
-	if (d0 < min(d1, d2)) {
-		color = vec4(albedo.rgb, 1.0);
-		return;
-	}
 
 	vec2 lm = texture(colortex1, texcoord).rg;
 	vec3 n = normalize(texture(colortex2, texcoord).rgb * 2.0 - 1.0);
